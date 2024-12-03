@@ -89,10 +89,37 @@ const slides = [
       Keep that energy going – you’re on the path to greatness!`,
     cta: true,
   },
+  {
+    id: 16,
+    apiSlide: true,
+  }
 ];
 
 function App() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [apiData, setApiData] = useState(null);
+  const [hasFetchedData, setHasFetchedData] = useState(false); // Track if data is already fetched
+  const [posts, setPosts] = useState([]); // Store new posts
+
+  // Load API data when API slide is active (if not already fetched)
+  useEffect(() => {
+    if (slides[currentSlide].apiSlide && !hasFetchedData) {
+      fetchApiData();
+    }
+  }, [currentSlide]);
+
+  const fetchApiData = async () => {
+    try {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/todos/"
+      );
+      const data = await response.json();
+      setApiData(data);
+      setHasFetchedData(true);
+    } catch (error) {
+      console.error("Error fetching API data:", error);
+    }
+  };
 
   // Keyboard navigation for slides
   useEffect(() => {
@@ -386,6 +413,21 @@ function App() {
             </div>
           </div>
         )
+
+      : slides[currentSlide].apiSlide ? (
+        <div className="api-slide">
+          <h1>API Data</h1>
+          <ul>
+            {apiData?.map((item) => (
+              <li key={item.id}>
+                <strong>{item.title}</strong> - Completed:{" "}
+                {item.completed ? "Yes" : "No"}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) 
+        
       
         : (
           <>
@@ -401,12 +443,14 @@ function App() {
                 />
               )}
             </div>
+            
+            
           </>
         )}
+        
       </div>
     </div>
   );
   
 }
-
 export default App;

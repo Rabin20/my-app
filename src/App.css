@@ -680,6 +680,28 @@ table tr:nth-child(even) {
   transform: scale(1.1);
 }
 
+/* Loading and Error States */
+.api-slide {
+  text-align: center;
+  padding: 2rem;
+}
+
+.api-data h2 {
+  font-size: 2rem;
+  color: #32cd32; /* Green color for title */
+}
+
+.api-data p {
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.loading-slide {
+  font-size: 1.5rem;
+  color: #ff6347; /* Red color */
+}
+
+
 
 
 @media (max-width: 768px) {
